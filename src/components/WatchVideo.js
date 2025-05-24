@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { closeMenu } from '../redux/menuToggleSlice';
 import { useSearchParams } from 'react-router-dom';
-import { YOUTUBE_VIDEO_WATCH_API,  YOUTUBE_API } from '../utils/constants';
+import { YOUTUBE_VIDEO_WATCH_API, YOUTUBE_API } from '../utils/constants';
 import { formatCompactNumber } from '../utils/helper';
 import { Link } from 'react-router-dom';
 import CommentsContainer from './CommentsContainer';
@@ -44,11 +44,11 @@ const WatchVideo = () => {
     }
 
     return (
-        <div className={`${!isMenuOpen ? 'px-20 ' : 'px-3 backdrop-blur-sm bg-white'} col-span-10 pt-6 flex w-full mt-[40px] `}>
+        <div className={`${!isMenuOpen ? 'px-20 ' : 'px-3 backdrop-blur-sm bg-white'} col-span-10 pt-6 flex w-full mt-[40px]  overflow-hidden`}>
             <div className='flex-grow-6'>
                 <div>
                     <iframe
-                        width="1200"
+                        width="950"
                         height="600"
                         src={"https://www.youtube.com/embed/" + videoId}
                         title="YouTube video player"
@@ -80,7 +80,7 @@ const WatchVideo = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='p-2 m-2'>
+                    <div className='p-2 m-2 '>
                         <CommentsContainer />
                     </div>
                 </div>
@@ -91,7 +91,7 @@ const WatchVideo = () => {
                         <LiveChat />
                     </div>
                     {relatedVideos?.map(video =>
-                        <Link key={video?.id} to={'/watch?v=' + video?.id} onClick={() => window.scroll(0,0)}>
+                        <Link key={video?.id} to={'/watch?v=' + video?.id} onClick={() => window.scroll(0, 0)}>
                             <div className='px-3 m-2 mt-[20px] flex'>
                                 <img className='rounded-xl w-[168px] h-[94px] ' alt='thumbnail' src={video?.snippet?.thumbnails?.medium?.url} />
                                 <ul className='flex flex-col justify-start ml-2 w-60'>

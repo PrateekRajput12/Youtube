@@ -13,60 +13,60 @@ import { useNavigate } from "react-router-dom";
 
 
 const Header = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const searchCache = useSelector((store) => store.cache);
+   const [searchQuery, setSearchQuery] = useState("");
+   const [suggestions, setSuggestions] = useState([]);
+   const [showSuggestions, setShowSuggestions] = useState(false);
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
+   const searchCache = useSelector((store) => store.cache);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (searchCache[searchQuery]) {
-        setSuggestions(searchCache[searchQuery]);
-      } else {
-        getSuggestions();
-      }
-    }, 200);
+   useEffect(() => {
+      const timer = setTimeout(() => {
+         if (searchCache[searchQuery]) {
+            setSuggestions(searchCache[searchQuery]);
+         } else {
+            getSuggestions();
+         }
+      }, 200);
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [searchQuery]);
+      return () => {
+         clearTimeout(timer);
+      };
+   }, [searchQuery]);
 
-  const getSuggestions = async () => {
-    await fetch(SEARCH_API + searchQuery)
-      .then((data) => data.json())
-      .then((response) => {
-        setSuggestions(response[1]);
-        console.log(response);
-        dispatch(cacheSuggestions({
-          [searchQuery] : response[1],
-        }))
-      });
-  };
+   const getSuggestions = async () => {
+      await fetch('https://cors-anywhere.herokuapp.com/' + SEARCH_API + searchQuery)
+         .then((data) => data.json())
+         .then((response) => {
+            setSuggestions(response[1]);
+            console.log(response);
+            dispatch(cacheSuggestions({
+               [searchQuery]: response[1],
+            }))
+         });
+   };
 
-  const handleSuggestion = (event) => {
-    setSearchQuery(event.target.innerText);
-    setShowSuggestions(false);
-    navigate('/results?search_query=' + encodeURI(event.target.innerText));
- }
+   const handleSuggestion = (event) => {
+      setSearchQuery(event.target.innerText);
+      setShowSuggestions(false);
+      navigate('/results?search_query=' + encodeURI(event.target.innerText));
+   }
 
-  const toggleMenuHandler = () => {
-    dispatch(toggleMenu());
-  };
-  return (
+   const toggleMenuHandler = () => {
+      dispatch(toggleMenu());
+   };
+   return (
 
-    <div className="fixed top-0 left-0 right-0 z-50 bg-white">
-        <div className="flex flex-row justify-between items-center px-4 py-3">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white">
+         <div className="flex flex-row justify-between items-center px-4 py-3">
             <div className="flex flex-row items-center">
-                <div className="w-10 h-10 hover:rounded-full hover:bg-gray-100 cursor-pointer">
-                    <img className="h-6 mt-2 ml-2" onClick={toggleMenuHandler} src={hamBurgerIcon} alt="hamBurgerIcon" />
-                </div>
-                <a href="/"><img src={youtubeIcon} alt="" /></a>
+               <div className="w-10 h-10 hover:rounded-full hover:bg-gray-100 cursor-pointer">
+                  <img className="h-6 mt-2 ml-2" onClick={toggleMenuHandler} src={hamBurgerIcon} alt="hamBurgerIcon" />
+               </div>
+               <a href="/"><img src={youtubeIcon} alt="" /></a>
             </div>
             <div className="relative">
-            <div className='flex flex-row relative'>
+               <div className='flex flex-row relative'>
                   <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onFocus={() => setShowSuggestions(true)} onBlur={() => setShowSuggestions(false)} className='border rounded-l-full w-[572px] h-10 pl-5 outline-none' type='text' placeholder='Search' />
                   <button className='border rounded-r-full w-16 h-10 bg-gray-100'><img alt='search-icon' className='h-5 mx-auto' src='https://cdn-icons-png.flaticon.com/512/482/482631.png' /></button>
                   <div className='w-10 h-10 hover:rounded-full hover:bg-gray-100 ml-5 cursor-pointer'>
@@ -81,7 +81,7 @@ const Header = () => {
                         {
                            suggestions?.map((sugg) =>
                               <li key={sugg} onMouseDown={(e) => handleSuggestion(e)} className='my-1 p-1 hover:bg-gray-100 cursor-pointer'>
-                                 <img  className='mr-5 h-4 ml-3 inline-block' alt='search-icon' src='https://cdn-icons-png.flaticon.com/512/482/482631.png' />
+                                 <img className='mr-5 h-4 ml-3 inline-block' alt='search-icon' src='https://cdn-icons-png.flaticon.com/512/482/482631.png' />
                                  <span>{sugg}</span>
                               </li>
                            )
@@ -102,11 +102,11 @@ const Header = () => {
                   <img className='mt-2 ml-2' alt='create-icon ' src={createIcon} />
                </div>
             </div>
-        </div>
-    </div>
+         </div>
+      </div>
 
-   
-  );
+
+   );
 };
 
 export default Header;
